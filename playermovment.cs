@@ -1,8 +1,10 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovment : MonoBehaviour
 {
     [SerializeField] private float speed;
+    private bool jumping;
     private Rigidbody2D body;
 
     private void Awake()
@@ -12,9 +14,22 @@ public class PlayerMovment : MonoBehaviour
     private void Update()
     {
         body.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, body.velocity.y);
-
-        if (Input.GetKey(KeyCode.UpArrow))
+        
+        if (Input.GetKey(KeyCode.UpArrow) && jumping == false)
+        {
             body.velocity = new Vector2(body.velocity.x, speed);
+            jumping = true;
+        }
+        
+            
+
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("ground"))
+        {
+            jumping = false;
+        }
     }
 
 
